@@ -15,6 +15,10 @@ export default class ScalableImage extends React.Component {
         this.computeAndSetRatio = this.computeAndSetRatio.bind(this);
     }
 
+    setNativeProps = (nativeProps) => {
+      this._root.setNativeProps(nativeProps);
+    }
+
     componentDidMount() {
         if (this.props.source.uri) {
             Image.getSize(this.props.source.uri ? this.props.source.uri : this.props.source, this.computeAndSetRatio, console.log);
@@ -55,7 +59,7 @@ export default class ScalableImage extends React.Component {
     render() {
         if (this.props.onPress) {
             return (
-                <TouchableOpacity onPress={this.props.onPress}>
+                <TouchableOpacity onPress={this.props.onPress} ref={component => this._root = component}>
                     <Image
                         { ...this.props }
                         style={[
@@ -65,10 +69,10 @@ export default class ScalableImage extends React.Component {
                     />
                 </TouchableOpacity>
             )
-        } 
+        }
         else {
             return (
-                <Image
+                <Image ref={component => this._root = component}
                     { ...this.props }
                     style={[
                         this.props.style,
